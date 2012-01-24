@@ -15,5 +15,19 @@ Basic flow plan:
 		js or css file to compare with minified versions
 	foreach one that isn't there, minify and save.
 	once all individual files are minified, combine into one asset.
+
+Alternate flow:
+	css/loader.php (for example) calls the script and gets the contents of the cache returned as string.
+	This method for (otherwise) fully html sites.
 	
 In this way, we only serve one file and only re-minify files that are changed.
+
+additional: if a js file is required but is listed as something.min.js, should always
+skip minifying it.
+
+NOTE: for initial development I'm going to use the example files supplied with HTML 
+Kickstart. (Wanted to play with it anyways.) I'm also going to load the elements from
+separate loader.php files to save parsing the large html file as php.
+
+In my projects, which have a php based index, I'm likely to skip that and include a
+cache-file link.
