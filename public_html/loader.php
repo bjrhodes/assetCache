@@ -6,7 +6,16 @@
  */
 require('../AssetCache.class.php');
 
-$cssRequired = array('kickstart.css', 'style.css');
+$cssRequired = array(
+	'kickstart.css', 
+	'style.css',
+	'kickstart-buttons.css',
+	'kickstart-menus.css',
+	'kickstart-grid.css',
+	'jquery.fancybox-1.3.4.css',
+	'zellner.css'
+	);
+
 $javascriptRequired = array('jquery.snippet.min.js', 'kickstart.js');
 
 switch ( strtolower( filter_input(INPUT_GET, 'type') ) ) {
@@ -25,6 +34,8 @@ switch ( strtolower( filter_input(INPUT_GET, 'type') ) ) {
 
 $arrayName = $filetype . 'Required';
 
-$Handler = AssetCache::init($filetype);
-echo file_get_contents($Handler->cacheAssets(${$arrayName}, true));
-?>
+$Handler = new AssetCache();
+
+$cacheFile = $Handler->cacheAssets(${$arrayName}, $filetype, true);
+
+echo file_get_contents($cacheFile);

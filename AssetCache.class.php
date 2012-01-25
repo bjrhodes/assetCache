@@ -6,28 +6,31 @@
  */
 class AssetCache {
 	
+	protected $Handler;
+	
 	/**
 	 * includes configs and registers the class autoloader
 	 * 
-	 * @param none
-	 * @return object filetype handler 
+	 * @param string $filetype the type of handler to invoke 
 	 * 
-	 * @codeCoverageIgnore - PHPUnit uses a different bootstrap
 	 */
-	public static function init($filetype = null){
-			
+	public function __construct( $filetype = null ){
+		
 		include __DIR__ . '/config.php';
 
 		set_error_handler('AssetCache::errorHandler');
-		spl_autoload_register('AssetCache::myLoader');
+		spl_autoload_register('AssetCache::autoLoader');
 		
-		$className = 'AssetCache_Handler_' . ucfirst($filetype);
-		if (class_exists($className)){
-			return new $className();
+		$this->Handler = new AssetCache_Handler($filetype);
+		
+	}
+	
+	public function __call($name, $args){
+		if (is_callable(array($this->Handler, $name))){
+			return call_user_func_array(array($this->Handler, $name), $args);
 		} else {
-			return new AssetCache_Handler();
+			throw new Exception('method not found');
 		}
-		
 	}
 	
 	/**
@@ -37,7 +40,7 @@ class AssetCache {
 	 * @param string $className
 	 * @return void 
 	 */
-	public static function myLoader($className){
+	public static function autoLoader($className){
 		
 			$filename = $className . '.class.php';
 
