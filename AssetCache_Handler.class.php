@@ -18,7 +18,8 @@ class AssetCache_Handler {
 	
 	protected $extension;
 	
-	protected $Minifier;
+	protected $filetype;
+	
 	
 	public function __construct( $filetype = null ) {
 		
@@ -60,11 +61,13 @@ class AssetCache_Handler {
 				$this->webPath = ASSETCACHE_CSS_WEBROOT;
 				$this->rawFileRoot = ASSETCACHE_CSS_ROOT;
 				$this->extension = '.css';
+				$this->filetype ='css';
 				break;
 			default:
 				$this->webPath = ASSETCACHE_JAVASCRIPT_WEBROOT;
 				$this->rawFileRoot = ASSETCACHE_JAVASCRIPT_ROOT;
 				$this->extension = '.js';
+				$this->filetype ='javascript';
 				break;
 		}
 		
@@ -78,10 +81,37 @@ class AssetCache_Handler {
 	 * @return string The cache file created 
 	 */
 	protected function minifyFile($filename){
-		// nope
-		return $this->rawFileRoot . $filename;
+		
+		$minifier = 'minify' . ucfirst($this->filetype);
+		
+		$originalPath = $this->rawFileRoot . $filename;
+		
+		$extensions = array_reverse(explode('.', $filename));
+		
+		// skip files already minified
+		if ( isset($extensions[1]) && $extensions[1] == 'min'){
+			return $originalPath;
+		}
+		
+		$writeTo = $this->createSingleFileCachePath($originalPath);
+		
+		return $this->$minifier($originalPath, $writeTo);
 	}
 	
+	
+	protected function minifyCss($original, $writeTo){
+		
+		file_put_contents($writeTo, CssMin::minify(file_get_contents($original)));
+		
+		return $writeTo;
+	}
+	
+	protected function minifyJavascript($original, $writeTo){
+		// @todo
+		file_put_contents($writeTo, JSMin::minify(file_get_contents($original)));
+		
+		return $writeTo;
+	}
 	
 	/**
 	 * Checks for an existing cache, if one exists, returns its location. 

@@ -46,7 +46,8 @@ class AssetCache {
 
 			$directories = array(
 				ASSETCACHE_ROOT,
-				ASSETCACHE_HANDLER_ROOT
+				ASSETCACHE_HANDLER_ROOT,
+				ASSETCACHE_LIB_ROOT
 			);
 			
 			foreach ($directories as $dir){
