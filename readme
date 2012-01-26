@@ -1,33 +1,36 @@
 Aims:
-	Simple and fully unit-tested
-	Allow for whole-direcotry includes of js / css or file-by-file includes
-	should compile, minify and compress js and css into one asset each
-	Should allow some way to refresh cache based on last modified dates
-	should allow different pages to include different assets.
+	Simple and fully unit-tested  [ -> unit tests still to do ]
+	Allow for whole-direcotry includes of js / css or file-by-file includes [ -> whole dir reads to do ]
+	should compile, minify and compress js and css into one asset each [ done ]
+	Should allow some way to refresh cache based on last modified dates [ done ]
+	should allow different pages to include different assets. [ done, allows various implementations ]
+	if a file is listed as something.min.xx, shouldn't re-minify [ done ]
+	Only serves one js and one css file, but only re-minifies files that are changed since caching. [ done ]
+	Example use cases [ PHP example To do ]
+
+Usage :
+	You have two options for usage:
 	
+	Initial setup :
+		copy the assetCache folder into your application and setup the config file with your directory structure
+		(defaults are as in the repo)
+		Ensure app can write to the cache, css and javascript folders.
 	
-Basic flow plan:
-	template file calls the loader with a list of files required
-	loader parses those files, and creates a string of filenames and modified dates
-		which it md5's or similar, then returns that as a filename to the template
-	if that file (md5.js or md5.css) exists, job done.
-	If not, do a similar check of filename and mod date against each individual
-		js or css file to compare with minified versions
-	foreach one that isn't there, minify and save.
-	once all individual files are minified, combine into one asset.
+	HTML based site:
+		create a file 'loader.php' or similar and put it in your web root. 
+		Link to it as your css and / or js file.
+		In the loader, setup the required files (folders recursion coming shortly) and call the app
+		output the contents of the cache file
+		 	eg $cacheFile = $Handler->cacheAssets($arrayOfFileNames, 'javascript', true);
 
-Alternate flow:
-	css/loader.php (for example) calls the script and gets the contents of the cache returned as string.
-	This method for (otherwise) fully html sites.
-	
-In this way, we only serve one file and only re-minify files that are changed.
+			echo file_get_contents($cacheFile);
+		(see example at public_html/loader.php)
 
-additional: if a js file is required but is listed as something.min.js, should always
-skip minifying it.
+	PHP based sites :
+		make sure your final output folders are inside your web-root
+		call the app where appropriate in your script
+			eg $cssCache = $Handler->cacheAssets($cssFilesArray, 'css')
+		link to the created resource in your template
 
-NOTE: for initial development I'm going to use the example files supplied with HTML 
-Kickstart. (Wanted to play with it anyways.) I'm also going to load the elements from
-separate loader.php files to save parsing the large html file as php.
-
-In my projects, which have a php based index, I'm likely to skip that and include a
-cache-file link.
+NOTE: for initial development I used the example files supplied with HTML 
+Kickstart. (Wanted to play with it anyways.)

@@ -4,7 +4,7 @@
  * @package assetCache
  * @author bjrhodes199@hotmail.com
  */
-require('../AssetCache.class.php');
+require('../assetCache/AssetCache.class.php');
 
 $cssRequired = array(
 	'kickstart.css', 
