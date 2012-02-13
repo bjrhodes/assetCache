@@ -1,3 +1,12 @@
+What is it?
+
+A simple to use, lightweight wrapper for some minifiers, to minify and merge multiple js and css files.
+
+Used in conjunction with CSS Sprites, can get http requests right down.
+
+NOTE: So far this is untested! It works but I still consider it very much alpha. Feedback very welcome.
+
+
 Aims:
 	Simple and fully unit-tested  [ -> unit tests still to do ]
 	Allow for whole-direcotry includes of js / css or file-by-file includes [ -> whole dir reads to do ]
