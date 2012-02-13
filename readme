@@ -7,6 +7,7 @@ Aims:
 	if a file is listed as something.min.xx, shouldn't re-minify [ done ]
 	Only serves one js and one css file, but only re-minifies files that are changed since caching. [ done ]
 	Example use cases [ PHP example To do ]
+	Rewrite this as markdown!
 
 Usage :
 	You have two options for usage:
