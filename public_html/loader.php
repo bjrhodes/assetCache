@@ -7,16 +7,21 @@
 require('../assetCache/AssetCache.class.php');
 
 $cssRequired = array(
+	'chosen.css',
 	'kickstart.css', 
 	'style.css',
 	'kickstart-buttons.css',
-	'kickstart-menus.css',
+	'kickstart-forms.css',
 	'kickstart-grid.css',
+	'kickstart-menus.css',
+	'kickstart-icons.min.css',
+	'prettify.css',
+	'tiptip.css',
 	'jquery.fancybox-1.3.4.css',
 	'zellner.css'
 	);
 
-$javascriptRequired = array('jquery.snippet.min.js', 'kickstart.js');
+$javascriptRequired = array('prettify.js','kickstart.js');
 
 switch ( strtolower( filter_input(INPUT_GET, 'type') ) ) {
 	
