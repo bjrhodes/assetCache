@@ -1,0 +1,37 @@
+#!/usr/bin/php -q
+
+<?php
+
+/*
+ * Command line tool to compile and minify a directory of JS and CSS
+ */
+
+include 'AssetCache.class.php';
+
+function helpText(){
+	return "\nUsage: assetCache /path/to/assets /path/to/target.file [js|css]\n\n";
+}
+
+if ($argc < 3){
+	die(helpText());
+}
+
+$directory = (substr($argv[1], 0, 1) === '/') ? $argv[1] : __DIR__ . '/' . $argv[1];
+$targetFile = (substr($argv[2], 0, 1) === '/') ? $argv[2] : __DIR__ . '/' . $argv[2];
+$extension = isset($argv[3]) ? $argv[3] : 'js';
+
+$directory = rtrim($directory, '/');
+
+if ((file_exists($targetFile) && !is_writable($targetFile)) || !is_writable(dirname($targetFile))) {
+	die('Target File not writable');
+}
+
+$Handler = new AssetCache($extension, $targetFile);
+
+if (!is_writable(ASSETCACHE_CACHE)){
+	die('Your cache directory ' . ASSETCACHE_CACHE . ' is not writable.');
+}
+
+// parse Directory
+$uncompressed = glob($directory . '/*.' . $extension);
+$syspath = $Handler->cacheAssets($uncompressed, null, true);

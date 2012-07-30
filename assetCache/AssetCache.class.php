@@ -14,14 +14,18 @@ class AssetCache {
 	 * @param string $filetype the type of handler to invoke 
 	 * 
 	 */
-	public function __construct( $filetype = null ){
+	public function __construct( $filetype = null, $targetFile = null ){
 		
 		include __DIR__ . '/config.php';
 
 		set_error_handler('AssetCache::errorHandler');
 		spl_autoload_register('AssetCache::autoLoader');
 		
-		$this->Handler = new AssetCache_Handler($filetype);
+		if (is_null($targetFile)){
+			$this->Handler = new AssetCache_DynamicHandler($filetype);
+		} else {
+			$this->Handler = new AssetCache_StaticHandler($filetype, $targetFile);
+		}
 		
 	}
 	
