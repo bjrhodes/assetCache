@@ -19,7 +19,7 @@ Aims:
 	Rewrite this as markdown!
 
 Usage :
-	You have two options for usage:
+	You have three options for usage:
 	
 	Initial setup :
 		copy the assetCache folder into your application and setup the config file with your directory structure
@@ -41,6 +41,13 @@ Usage :
 		call the app where appropriate in your script
 			eg $cssCache = $Handler->cacheAssets($cssFilesArray, 'css')
 		link to the created resource in your template
+
+	CLI usage:
+		assetCache /pathTo/uncompressed/files/ /pathto/target.min.js [css|js]
+
+		This will parse the supplied uncompressed dir and compile all files with 
+		supplied extension (css or js) into to the target file. Default filetype
+		is js
 
 NOTE: for initial development I used the example files supplied with HTML 
 Kickstart. (Wanted to play with it anyways.)
